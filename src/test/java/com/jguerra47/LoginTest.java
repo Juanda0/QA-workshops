@@ -79,10 +79,15 @@ public class LoginTest {
         inputCheckoutPostalCode.sendKeys("12345");
         checkoutButton.click();
 
+        WebElement finishButton = driver.findElement(By.xpath("//div[@class=\"summary_info\"]/div[@class=\"cart_footer\"]/button[@data-test='finish']"));
         List<WebElement> checkoutPrices = driver.findElements(By.xpath("//div[@data-test]/div[@data-test=\"inventory-item\"]/div/div[@class=\"item_pricebar\"]/div"));
         List<String> checkoutPricesText = checkoutPrices.stream().limit(numberOfItems).map(WebElement::getText).toList();
+        finishButton.click();
+
+        WebElement successTitle = driver.findElement(By.xpath("//div[@data-test=\"header-container\"]/div[@data-test=\"secondary-header\"]/span[@data-test=\"title\"]"));
 
         // Assert
         assertEquals(shopPricesText, checkoutPricesText);
+        assertEquals("Checkout: Complete!", successTitle.getText());
     }
 }
